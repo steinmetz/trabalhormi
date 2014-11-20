@@ -1,3 +1,11 @@
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -10,14 +18,11 @@
  * @author Caio
  */
 public class Terminal extends javax.swing.JFrame {
-
-    /**
-     * Creates new form Terminal
-     */
+    
+    int idLoja;
     public Terminal() {
         initComponents();
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -34,10 +39,15 @@ public class Terminal extends javax.swing.JFrame {
         textQuantidade = new javax.swing.JTextField();
         buttonInserir = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
-        tableItens1 = new javax.swing.JTable();
+        listaVenda = new javax.swing.JTable();
         buttonVenda = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         vendedor.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         vendedor.setText("Chave Vendedor");
@@ -56,9 +66,14 @@ public class Terminal extends javax.swing.JFrame {
         buttonInserir.setBackground(new java.awt.Color(153, 255, 153));
         buttonInserir.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         buttonInserir.setText("Inserir");
+        buttonInserir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonInserirActionPerformed(evt);
+            }
+        });
 
-        tableItens1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        tableItens1.setModel(new javax.swing.table.DefaultTableModel(
+        listaVenda.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        listaVenda.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -81,7 +96,7 @@ public class Terminal extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane3.setViewportView(tableItens1);
+        jScrollPane3.setViewportView(listaVenda);
 
         buttonVenda.setBackground(new java.awt.Color(153, 255, 153));
         buttonVenda.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
@@ -99,22 +114,25 @@ public class Terminal extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(vendedor)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(buttonVenda)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jScrollPane3)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(comboProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(textQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(buttonInserir)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(buttonVenda)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jScrollPane3)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addComponent(jLabel3)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(comboProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jLabel4)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(textQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(buttonInserir))))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(vendedor)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -141,6 +159,21 @@ public class Terminal extends javax.swing.JFrame {
     private void buttonVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonVendaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_buttonVendaActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        preencheProdutos();
+    }//GEN-LAST:event_formWindowOpened
+
+    private void buttonInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonInserirActionPerformed
+        try {
+            DefaultTableModel model = (DefaultTableModel) listaVenda.getModel();
+            Banco b = new Banco();
+            b.desconecta();           
+            model.addRow(new Object[]{1, "Caixa", 2,10.50});
+        } catch (SQLException ex) {
+            Logger.getLogger(Terminal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_buttonInserirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -184,8 +217,32 @@ public class Terminal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable tableItens1;
+    private javax.swing.JTable listaVenda;
     private javax.swing.JTextField textQuantidade;
     private javax.swing.JLabel vendedor;
     // End of variables declaration//GEN-END:variables
+
+    public void passaNome(String valor,int idLojaInt){
+        vendedor.setText(valor);
+        this.idLoja = idLojaInt;
+    }
+    private void preencheProdutos() {
+        try {
+            ArrayList<Produto> p = new ArrayList<Produto>();
+            Banco b = new Banco();
+            comboProduto.removeAllItems();
+            p = b.ListarProdutos(String.valueOf(this.idLoja));
+            b.desconecta();
+            if (!p.isEmpty()) {
+                for (Produto p1 : p) {
+                    comboProduto.addItem(p1.getNome());
+                    comboProduto.addItem(p1);
+                }
+            }else{
+                comboProduto.addItem("Sem produtos");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Terminal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

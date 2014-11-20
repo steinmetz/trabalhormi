@@ -4,6 +4,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 public class Banco {
@@ -30,7 +31,17 @@ public class Banco {
         } else{
           f = new Funcionario(rs.getInt("id"), rs.getString("nome"), rs.getString("tipo"), rs.getString("login"), rs.getString("senha"), rs.getInt("loja_id"));
         } 
+        rs.close();
         return f;
+    }
+    ArrayList<Produto> ListarProdutos(String idLoja) throws SQLException {
+        ArrayList<Produto> p = new ArrayList<Produto>();
+        ResultSet rs = this.stmt.executeQuery("SELECT p.* FROM produto AS p INNER JOIN estoque AS e ON e.produto_id = p.id WHERE e.loja_id = "+idLoja+" AND quantidade > 0");
+        while (rs.next()) {                
+            p.add(new Produto(rs.getInt("id"), rs.getString("nome")));
+        } 
+        rs.close();
+        return p;
     }
 
 //    public ResultSet executeSql(String sql) {

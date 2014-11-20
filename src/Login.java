@@ -3,6 +3,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -116,6 +117,7 @@ public class Login extends javax.swing.JFrame {
             }else{
                 if(f.getTipo().equals("Caixa")){
                     Terminal t = new Terminal();
+                    t.passaNome(f.getNome(),f.getLoja_id());
                     t.show();
                     dispose();  
                 }
