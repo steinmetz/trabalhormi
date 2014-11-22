@@ -5,7 +5,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 public class Banco {
     
@@ -42,6 +45,53 @@ public class Banco {
         } 
         rs.close();
         return p;
+    }
+    Venda itemVenda(String s) throws SQLException {
+        Venda v = null;
+        ResultSet rs = this.stmt.executeQuery("SELECT p.id, p.nome, e.valor, e.quantidade FROM produto AS p INNER JOIN estoque AS e ON e.produto_id = p.id WHERE p.nome = '"+s+"'");
+        while (rs.next()) { 
+            v = new Venda(rs.getInt("id"), rs.getString("nome"), rs.getFloat("valor"), rs.getInt("quantidade"), 0);
+        } 
+        rs.close();
+        return v;
+    }
+    void vender(ArrayList<Venda> it, int idLoja, String V) throws SQLException {
+        
+        
+        try {
+            float total = 0;
+            for (int i = 0 ; i < it.size() ; i++){
+                total = total + it.get(i).getValor();
+            }
+            //inserir a venda
+            this.stmt.executeUpdate("INSERT INTO venda (valor_tot, quantidade_total, funcionario) VALUES ("
+                    + "\"" + total + "\","
+                    + "\"" + it.size() + "\","
+                    + "\"" + V + "\")");
+            //inserir os item na venda
+            for (int i = 0 ; i < it.size() ; i++){
+                this.stmt.executeUpdate("INSERT INTO itensVenda (venda_id, produto_id, descricaoProduto, quantidade, valor) VALUES ("
+                        + "\"1\","
+                        + "\"" + it.get(i).getId() + "\","
+                        + "\"" + it.get(i).getNome() + "\","
+                        + "\"" + it.get(i).getQuantidadeVendida()+ "\","
+                        + "\"" + it.get(i).getValor() + "\")");
+                int qtd = it.get(i).getQuantidade() - it.get(i).getQuantidadeVendida();
+                //dar baixa no estoque
+                this.stmt.executeUpdate("UPDATE estoque SET quantidade = "+qtd+" WHERE produto_id = "
+                        +it.get(i).getId()+" AND loja_id = "+idLoja);
+            }
+            // log
+            String msg = "Venda realizada com sucesso pelo funcionario "+V;
+            this.stmt.executeUpdate("INSERT INTO log (descricao,loja_id) VALUES ("
+                    + "\"" + msg + "\","
+                    + "\"" + idLoja + "\")");
+        } catch (SQLException ex) {
+            String msg = "Erro ao processar venda pelo funcionario "+V;
+            this.stmt.executeUpdate("INSERT INTO log (descricao,loja_id) VALUES ("
+                    + "\"" + msg + "\","
+                    + "\"" + idLoja + "\")");
+        }
     }
 
 //    public ResultSet executeSql(String sql) {
