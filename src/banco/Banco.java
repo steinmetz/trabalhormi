@@ -111,6 +111,26 @@ public class Banco {
         rs.close();
         return x;
     }
+    public ArrayList<EstoqueTela> estoque(String n, int id) throws SQLException {
+        ArrayList<EstoqueTela> x = new ArrayList<EstoqueTela>();
+        ResultSet rs = null;
+        if (n.equals("Administrador")) {
+            rs = this.stmt.executeQuery("SELECT e.id, p.nome, e.quantidade, e.valor, l.nome FROM estoque AS e"
+                    + "INNER JOIN loja AS l ON e.loja_id = l.id "
+                    + "INNER JOIN produto AS p ON e.produto_id = p.id");
+        }
+        else if (n.equals("Gerente")){
+            rs = this.stmt.executeQuery("SELECT e.id, p.nome, e.quantidade, e.valor, l.nome FROM estoque AS e"
+                    + "INNER JOIN loja AS l ON e.loja_id = l.id "
+                    + "INNER JOIN produto AS p ON e.produto_id = p.id WHERE e.loja_id = "+id);
+        }
+        while (rs.next()) { 
+            x.add(new EstoqueTela(rs.getInt(1),rs.getString(2),rs.getInt(3),rs.getFloat(4), rs.getString(5)));
+        } 
+        rs.close();
+        return x;
+        
+    }
 
 //    public ResultSet executeSql(String sql) {
 //        Statement stmt = null;

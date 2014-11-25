@@ -2,6 +2,9 @@ package frames;
 
 
 import java.awt.Dimension;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 
 /*
@@ -77,12 +80,27 @@ public class Gerenciamento extends javax.swing.JFrame {
         jMenu1.add(jMenuItem1);
 
         jMenuItem2.setText("Estoque");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem2);
 
         jMenuItem3.setText("Funcionarios");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem3);
 
         jMenuItem4.setText("Produtos");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem4);
 
         jMenuBar1.add(jMenu1);
@@ -121,17 +139,52 @@ public class Gerenciamento extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu1ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        TelaFuncionarios t = new TelaFuncionarios();
-        desktop.add(t); 
-        t.setVisible(true);// TODO add your handling code here:
+        
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-        TelaLog t = new TelaLog();
-        //t.passaDados(this.nivel, this.idLoja);
-        desktop.add(t); 
-        t.setVisible(true);
+        try {
+            TelaLog t = new TelaLog();
+            t.passaDados(this.nivel, this.idLoja);
+            desktop.add(t);
+            t.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(Gerenciamento.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jMenuItem5ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        try {
+            TelaEstoque t = new TelaEstoque();
+            t.passaDados(this.nivel, this.idLoja);
+            desktop.add(t);
+            t.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(Gerenciamento.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        try {
+            TelaFuncionarios t = new TelaFuncionarios();
+            t.passaDados(this.nivel, this.idLoja);
+            desktop.add(t);
+            t.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(Gerenciamento.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+//        try {
+//             TelaProdutos t = new TelaProdutos();
+//             t.passaDados(this.nivel, this.idLoja);
+//             desktop.add(t);
+//             t.setVisible(true);
+//         } catch (SQLException ex) {
+//             Logger.getLogger(Gerenciamento.class.getName()).log(Level.SEVERE, null, ex);
+//         }
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     /**
      * @param args the command line arguments
