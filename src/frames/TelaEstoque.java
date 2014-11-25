@@ -28,7 +28,7 @@ public class TelaEstoque extends javax.swing.JInternalFrame {
         Banco b = new Banco();
         ArrayList<EstoqueTela> x = b.estoque(n,id);
         for (int i = 0 ; i < x.size() ; i++) {
-            model.addRow(new Object[]{x.get(i).getId(),x.get(i).getProduto(), x.get(i).getQuantidade(), x.get(i).getValor(), x.get(i).getLoja()});
+            model.addRow(new Object[]{x.get(i).getId(),x.get(i).getProduto(), x.get(i).getValor(), x.get(i).getQuantidade(),x.get(i).getLoja()});
         }
     }
 
@@ -43,6 +43,8 @@ public class TelaEstoque extends javax.swing.JInternalFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         Tabela = new javax.swing.JTable();
+
+        setClosable(true);
 
         Tabela.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -69,8 +71,9 @@ public class TelaEstoque extends javax.swing.JInternalFrame {
         });
         jScrollPane1.setViewportView(Tabela);
         if (Tabela.getColumnModel().getColumnCount() > 0) {
-            Tabela.getColumnModel().getColumn(0).setResizable(false);
+            Tabela.getColumnModel().getColumn(0).setMinWidth(0);
             Tabela.getColumnModel().getColumn(0).setPreferredWidth(0);
+            Tabela.getColumnModel().getColumn(0).setMaxWidth(0);
         }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

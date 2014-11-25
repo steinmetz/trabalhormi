@@ -46,6 +46,8 @@ public class TelaFuncionarios extends javax.swing.JInternalFrame {
 
         jToggleButton1.setText("jToggleButton1");
 
+        setClosable(true);
+
         Tabela.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},

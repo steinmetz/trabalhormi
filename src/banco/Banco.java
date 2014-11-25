@@ -115,12 +115,12 @@ public class Banco {
         ArrayList<EstoqueTela> x = new ArrayList<EstoqueTela>();
         ResultSet rs = null;
         if (n.equals("Administrador")) {
-            rs = this.stmt.executeQuery("SELECT e.id, p.nome, e.quantidade, e.valor, l.nome FROM estoque AS e"
+            rs = this.stmt.executeQuery("SELECT e.id, p.nome, e.quantidade, e.valor, l.nome FROM estoque AS e "
                     + "INNER JOIN loja AS l ON e.loja_id = l.id "
                     + "INNER JOIN produto AS p ON e.produto_id = p.id");
         }
         else if (n.equals("Gerente")){
-            rs = this.stmt.executeQuery("SELECT e.id, p.nome, e.quantidade, e.valor, l.nome FROM estoque AS e"
+            rs = this.stmt.executeQuery("SELECT e.id, p.nome, e.quantidade, e.valor, l.nome FROM estoque AS e "
                     + "INNER JOIN loja AS l ON e.loja_id = l.id "
                     + "INNER JOIN produto AS p ON e.produto_id = p.id WHERE e.loja_id = "+id);
         }

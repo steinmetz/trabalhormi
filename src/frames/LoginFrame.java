@@ -142,12 +142,12 @@ public class LoginFrame extends javax.swing.JFrame {
             Terminal t = new Terminal();
             t.passaNome(f.getNome(), f.getLoja_id());
             t.show();
-            dispose();
+            //dispose();
         } else {
             Gerenciamento g = new Gerenciamento();
             g.passaNome(f.getTipo(), f.getLoja_id());
             g.show();
-            dispose();
+            //dispose();
         }
     }
 
