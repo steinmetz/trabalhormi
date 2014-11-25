@@ -31,7 +31,10 @@ public class Cliente extends UnicastRemoteObject implements ICliente{
 
     @Override
     public void loginReceive(Funcionario f) throws RemoteException {
-        System.out.println(""+f.getNome());
-    
+        if (f == null) {
+            c.setLoginError("Login ou senha incorretos.");
+        } else {
+            c.loginSuccess(f);            
+        }
     }
 }

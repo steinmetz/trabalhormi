@@ -5,11 +5,13 @@
  */
 package beans;
 
+import java.io.Serializable;
+
 /**
  *
  * @author charles
  */
-public class Estoque{
+public class Estoque implements Serializable{
 	public int id;
 	public int loja_id;
 	public int produto_id;

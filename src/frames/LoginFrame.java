@@ -1,6 +1,5 @@
 package frames;
 
- 
 import banco.Banco;
 import beans.Funcionario;
 import comunicacao.Cliente;
@@ -10,28 +9,25 @@ import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.logging.Level;
-import java.util.logging.Logger; 
+import java.util.logging.Logger;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author Caio
  */
 public class LoginFrame extends javax.swing.JFrame {
 
-    
     IServidor com;
     Cliente c;
-    
-    
+
     public LoginFrame() {
         initComponents();
-        
+
         try {
             com = (IServidor) Naming.lookup("rmi://localhost/Comunicacao");
             c = new Cliente(this);
@@ -129,38 +125,31 @@ public class LoginFrame extends javax.swing.JFrame {
 
     private void buttonEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEntrarActionPerformed
         try {
-            //        try {
-//            Funcionario f = null;
-//            textErro.setText("");
-//            Banco b = new Banco();
-//            f = b.login(textUsuario.getText().trim(), textSenha.getText().trim());
-//            b.desconecta();
-//            if(f == null){
-//                textErro.setText("Login ou senha incorretos.");
-//            }else{
-//                if(f.getTipo().equals("Caixa")){
-//                    Terminal t = new Terminal();
-//                    t.passaNome(f.getNome(),f.getLoja_id());
-//                    t.show();
-//                    dispose();  
-//                }
-//                else{
-//                    Gerenciamento g = new Gerenciamento();
-//                    g.passaNome(f.getTipo(),f.getLoja_id());
-//                    g.show();
-//                    dispose(); 
-//                }
-//            }
-//        } catch (SQLException ex) {
-//            Logger.getLogger(LoginFrame.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-            
+            lblErro.setText("");
             com.login(textUsuario.getText().trim(), textSenha.getText().trim());
         } catch (RemoteException ex) {
             Logger.getLogger(LoginFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }//GEN-LAST:event_buttonEntrarActionPerformed
+
+    public void setLoginError(String msg) {
+        lblErro.setText(msg);
+    }
+
+    public void loginSuccess(Funcionario f) {
+        if (f.getTipo().equals("Caixa")) {
+            Terminal t = new Terminal();
+            t.passaNome(f.getNome(), f.getLoja_id());
+            t.show();
+            dispose();
+        } else {
+            Gerenciamento g = new Gerenciamento();
+            g.passaNome(f.getTipo(), f.getLoja_id());
+            g.show();
+            dispose();
+        }
+    }
 
     /**
      * @param args the command line arguments

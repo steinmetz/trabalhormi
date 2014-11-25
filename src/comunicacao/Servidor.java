@@ -5,10 +5,15 @@
  */
 package comunicacao;
 
+import banco.Banco;
 import beans.Funcionario;
+import frames.LoginFrame;
 import frames.ServidorFrame;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -31,7 +36,7 @@ public class Servidor extends UnicastRemoteObject implements IServidor {
 
     @Override
     public void recebeMensagemDoCliente(String msg) throws RemoteException {
-        System.out.println(""+msg);
+        System.out.println("" + msg);
         //s.adicionaMsg(msg);
     }
 
@@ -42,17 +47,24 @@ public class Servidor extends UnicastRemoteObject implements IServidor {
             ex.printStackTrace();
         }
     }
-    
+
     public void login(String usuario, String senha) {
+        Funcionario f = null;
+        //buscar no banco aqui
         try {
-            //buscar no banco aqui
-            Funcionario f = new Funcionario(1, usuario, "adm", usuario, senha, 1);
-            returnLogin(f);
+            Banco b = new Banco();
+            f = b.login(usuario, senha);
+            b.desconecta();             
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+        try {
+            returnLogin(f);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-    
+
     public void returnLogin(Funcionario func) {
         try {
             c.loginReceive(func);

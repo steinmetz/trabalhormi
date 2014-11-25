@@ -2,6 +2,7 @@ package comunicacao;
 
 
 import beans.Funcionario;
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 /*
@@ -13,7 +14,7 @@ import java.rmi.RemoteException;
  *
  * @author usrlab25
  */
-public interface ICliente {
+public interface ICliente extends Remote{
     public void recebeMensagemDoServidor(String msg) throws RemoteException;
     
     
