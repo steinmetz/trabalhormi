@@ -252,8 +252,7 @@ public class Terminal extends javax.swing.JFrame {
             p = b.ListarProdutos(String.valueOf(this.idLoja));
             b.desconecta();
             if (!p.isEmpty()) {
-                for (Produto p1 : p) {
-                    comboProduto.addItem(p1.getNome());
+                for (Produto p1 : p) { 
                     comboProduto.addItem(p1);
                 }
             }else{
