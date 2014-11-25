@@ -27,7 +27,6 @@ public class Servidor extends UnicastRemoteObject implements IServidor {
     public void recebeCilente(ICliente c) throws RemoteException {
         this.c = c;
         System.out.println("Recebi um cliente");
-        //s.adicionaMsg("Recebi um cliente");
     }
 
     @Override
