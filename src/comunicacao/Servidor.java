@@ -48,21 +48,28 @@ public class Servidor extends UnicastRemoteObject implements IServidor {
         }
     }
 
-    public void login(String usuario, String senha) {
-        Funcionario f = null;
+    public void login(final String usuario, final String senha) {
         //buscar no banco aqui
-        try {
-            Banco b = new Banco();
-            f = b.login(usuario, senha);
-            b.desconecta();             
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        try {
-            returnLogin(f);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                Funcionario f = null;
+                try {
+                    Banco b = new Banco();
+                    f = b.login(usuario, senha);
+                    b.desconecta();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                try {
+                    returnLogin(f);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
     }
 
     public void returnLogin(Funcionario func) {
