@@ -93,6 +93,22 @@ public class Banco {
                     + "\"" + idLoja + "\")");
         }
     }
+    ArrayList<String> log(String n, int i) throws SQLException {
+        ArrayList<String> x = new ArrayList<String>();
+        ResultSet rs = null;
+        if (n.equals("Administrador")) {
+            rs = this.stmt.executeQuery("SELECT g.descricao, l.nome FROM log AS g INNER JOIN loja AS l ON g.loja_id = l.id");
+        }
+        else if (n.equals("Gerente")){
+            rs = this.stmt.executeQuery("SELECT g.descricao, l.nome FROM log AS g INNER JOIN loja AS l ON g.loja_id = l.id WHERE g.loja_id = "+i);
+        }
+        while (rs.next()) { 
+            x.add(rs.getString("descricao"));
+            x.add(rs.getString("nome"));
+        } 
+        rs.close();
+        return x;
+    }
 
 //    public ResultSet executeSql(String sql) {
 //        Statement stmt = null;

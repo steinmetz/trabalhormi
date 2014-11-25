@@ -121,6 +121,12 @@ public class Login extends javax.swing.JFrame {
                     t.show();
                     dispose();  
                 }
+                else{
+                    Gerenciamento g = new Gerenciamento();
+                    g.passaNome(f.getTipo(),f.getLoja_id());
+                    g.show();
+                    dispose(); 
+                }
             }
         } catch (SQLException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
