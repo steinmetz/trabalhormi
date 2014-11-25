@@ -14,11 +14,20 @@ import java.io.Serializable;
 public class Produto implements Serializable{
     private int id;
     private String nome;
+    
+    public Produto(){
+        
+    }
 
-    public Produto (int id, String nome){
+    public Produto (int id,String nome){
         this.id = id;
         this.nome = nome;
     }
+    public Produto (String nome){
+        this.id = id;
+        this.nome = nome;
+    }
+    
     public int getId() {
         return id;
     }

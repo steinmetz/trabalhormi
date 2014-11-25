@@ -39,6 +39,21 @@ public class Banco {
         rs.close();
         return f;
     }
+    
+    public void inserirProdutos(Produto p) throws SQLException {        
+        ResultSet rs = this.stmt.executeQuery("insert into produto('nome') values('"+p.getNome()+"')"); 
+    }
+    
+    public Produto buscarProdutos(int id) throws SQLException {
+        Produto p = null;
+        ResultSet rs = this.stmt.executeQuery("select * from produto where id = "+id);
+        while (rs.next()) {                
+            p = new Produto(rs.getInt("id"), rs.getString("nome"));
+        } 
+        rs.close();
+        return p;
+    }
+    
     public ArrayList<Produto> ListarProdutos(String idLoja) throws SQLException {
         ArrayList<Produto> p = new ArrayList<Produto>();
         ResultSet rs = this.stmt.executeQuery("SELECT p.* FROM produto AS p INNER JOIN estoque AS e ON e.produto_id = p.id WHERE e.loja_id = "+idLoja+" AND quantidade > 0");
